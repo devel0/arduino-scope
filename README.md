@@ -17,6 +17,7 @@ Reading about [audio signal acquisition from a headphone jack](http://forum.ardu
 
 ## flash arduino
 
+- pre: install [arduino ide](https://www.arduino.cc/en/Main/Software)
 - open sketch `arduino-scope/arduino-scope.ino` and flash firmware
   - tools/board ( eg. arduino nano )
   - tools/port
@@ -24,7 +25,7 @@ Reading about [audio signal acquisition from a headphone jack](http://forum.ardu
 
 ## debug and execution
 
-- install [vscode](https://code.visualstudio.com/) and suggested c++ extension asked when open the folder
+- pre: install [vscode](https://code.visualstudio.com/) and suggested c++ extension asked when open the folder
 
 ```
 code .
