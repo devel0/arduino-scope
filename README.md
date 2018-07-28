@@ -15,6 +15,13 @@ Reading about [audio signal acquisition from a headphone jack](http://forum.ardu
 - *v/V* : decrease/increase vertical factor
 - *h/H* : decrease/increase horizontal factor
 
+## flash arduino
+
+- open sketch `arduino-scope/arduino-scope.ino` and flash firmware
+  - tools/board ( eg. arduino nano )
+  - tools/port
+  - sketch upload
+
 ## debug and execution
 
 - install [vscode](https://code.visualstudio.com/) and suggested c++ extension asked when open the folder
