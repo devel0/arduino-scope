@@ -26,6 +26,7 @@ const int ADCVALUEMAX = 1023;
 const int windowHeightMargin = 20;
 double vFactor = 1;
 double hFactor = 1;
+string serialPortName;
 
 void reshape(int w, int h)
 {
@@ -91,7 +92,7 @@ void idleFunc()
 
 void thReadSerialFn()
 {
-  ifstream infile("/dev/ttyUSB1");
+  ifstream infile(serialPortName);
   string line;
 
   while (getline(infile, line))
@@ -140,6 +141,15 @@ void keyboard(unsigned char c, int x, int y)
 
 int main(int argc, char **argv)
 {
+  if (argc != 2)
+  {
+    cout << "Syntax: " << argv[0] << " <serial-port>" << endl;
+
+    return 1;
+  }
+
+  serialPortName = argv[1];
+
   glutInit(&argc, argv);
   glutCreateWindow("arduinoscope");
   glutDisplayFunc(display);
