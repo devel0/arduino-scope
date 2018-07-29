@@ -1,6 +1,9 @@
 # arduino-scope
 simple oscilloscope opengl using arduino as adc input through usb serial
 
+![img](doc/Selection_001.png)
+*scoping f-Generator 9Hz from Transistor Tester*
+
 ## introduction
 
 Reading about [audio signal acquisition from a headphone jack](http://forum.arduino.cc/index.php?topic=42833.0) I wanted to try to see if suggested experiment works:
@@ -14,6 +17,7 @@ Reading about [audio signal acquisition from a headphone jack](http://forum.ardu
 - *space* : pause display
 - *v/V* : decrease/increase vertical factor
 - *h/H* : decrease/increase horizontal factor
+- *up/down* : delta vertical
 
 ## flash arduino
 
@@ -34,3 +38,7 @@ code .
 - breakpoints works thanks to `gdb` debugger ( `-g` switch to gcc - see Makefile )
 - set USB port speed ( eg. `stty -F /dev/ttyUSB1 115200` )
 - hit F5 to start
+
+## dev notes
+
+- data 10bit adc from arduino are encoded into two bytes with a marker to allow c++ to recognize binary data order ( see word [mangled](https://github.com/devel0/arduino-scope/blob/3fe14ac2e20721e855c94ae7a256e31a1498df7d/arduino-scope/arduino-scope.ino#L27-L39) and [demangle](https://github.com/devel0/arduino-scope/blob/3fe14ac2e20721e855c94ae7a256e31a1498df7d/arduinoscope.cc#L152)
