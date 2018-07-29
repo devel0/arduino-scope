@@ -36,7 +36,6 @@ code .
 ```
 
 - breakpoints works thanks to `gdb` debugger ( `-g` switch to gcc - see Makefile )
-- set USB port speed ( eg. `stty -F /dev/ttyUSB1 115200` )
 - hit F5 to start
 
 ## dev notes
