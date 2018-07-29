@@ -15,9 +15,17 @@ Reading about [audio signal acquisition from a headphone jack](http://forum.ardu
 - *v/V* : decrease/increase vertical factor
 - *h/H* : decrease/increase horizontal factor
 
+## flash arduino
+
+- pre: install [arduino ide](https://www.arduino.cc/en/Main/Software)
+- open sketch `arduino-scope/arduino-scope.ino` and flash firmware
+  - tools/board ( eg. arduino nano )
+  - tools/port
+  - sketch upload
+
 ## debug and execution
 
-- install [vscode](https://code.visualstudio.com/) and suggested c++ extension asked when open the folder
+- pre: install [vscode](https://code.visualstudio.com/) and suggested c++ extension asked when open the folder
 
 ```
 code .
@@ -25,5 +33,4 @@ code .
 
 - breakpoints works thanks to `gdb` debugger ( `-g` switch to gcc - see Makefile )
 - set USB port speed ( eg. `stty -F /dev/ttyUSB1 115200` )
-- tune USB port name in code `thReadSerialFn` function ( TODO: args parsing )
 - hit F5 to start
