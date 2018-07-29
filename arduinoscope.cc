@@ -157,7 +157,7 @@ void thReadSerialFn()
       lst.push_back(value);
       lstMutex.unlock();
 
-      cout << "value = " << value << endl;
+//      cout << "value = " << value << endl;
 
       i += 2;
     }
