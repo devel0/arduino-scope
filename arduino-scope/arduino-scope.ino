@@ -23,5 +23,22 @@ void setup() {
 
 void loop() { 
   sensorValue = analogRead(sensorPin);  
-  Serial.println(sensorValue, HEX);
+
+  // mangled word 
+  //   0000CCBB 11AAAAAA
+  // from original sensorValue
+  //   ------CC BBAAAAAA
+
+  // (transmitted LSB mode)
+  //   11AAAAAA 0000CCBB
+
+  uint8_t low = (sensorValue & 0x3f) | 0xc0;
+  Serial.write(low);       
+  
+  uint8_t high = ((sensorValue & 0xc0) >> 6) | ((sensorValue >> 8) & 0xf);
+  Serial.write(high);
+/*
+  Serial.print("value = "); Serial.println(sensorValue);
+  Serial.print("low = "); Serial.println(low);
+  Serial.print("high = "); Serial.println(high);  */
 }
