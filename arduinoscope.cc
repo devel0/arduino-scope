@@ -22,7 +22,7 @@ using namespace std;
 thread thReadSerial;
 auto start = std::chrono::system_clock::now();
 deque<unsigned long> lst;
-const int lstMaxSize = 2048;
+const int lstMaxSize = 800;
 mutex lstMutex;
 bool started = false;
 const int ADCVALUEMAX = 1023;
