@@ -42,12 +42,23 @@ code .
 
 - data 10bit adc from arduino are encoded into two bytes with a marker to allow c++ to recognize binary data order ( see word [mangled](https://github.com/devel0/arduino-scope/blob/3fe14ac2e20721e855c94ae7a256e31a1498df7d/arduino-scope/arduino-scope.ino#L27-L39) and [demangle](https://github.com/devel0/arduino-scope/blob/3fe14ac2e20721e855c94ae7a256e31a1498df7d/arduinoscope.cc#L152)
 
-## limitations
+## function generator through smartphone
 
-Follow image shown pwm 1% ( ugly ), I suppose the fact came from unmanaged timebase due to ADC conversion ( arduino takes some time to convert analog to digital at 10bit ), in other words there are some limitations about maximum frequency that adc can handle. A good explanation came from another more professional project [girino](https://www.instructables.com/id/Girino-Fast-Arduino-Oscilloscope/).
+- 440Hz
 
-![img](doc/Selection_002.png)
-*pwm 1%*
+![img](doc/fngen-sin-440.png)
+![img](doc/fngen-tri-440.png)
+![img](doc/fngen-sq-440.png)
+
+- 440Hz duty 10%, 90%
+
+![img](doc/fngen-sq-440-duty10.png)
+![img](doc/fngen-sq-440-duty90.png)
+
+- 1Khz
+
+![img](doc/fngen-sq-1k.png)
+
 
 ## future
 
