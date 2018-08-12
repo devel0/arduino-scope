@@ -8,10 +8,10 @@
 #include <fcntl.h>
 
 const int ADC_VALUE_MIN = 0;
-const int ADC_VALUE_MAX = 1023;
+const int ADC_VALUE_MAX = 255;
 
 const double VOLTAGE_MIN = 0.0;
-const double VOLTAGE_MAX = 5.0;
+const double VOLTAGE_MAX = 4.63; // measure your real arduino GND/VCC
 
 Global *Global::instance = NULL;
 
