@@ -8,8 +8,10 @@ LIBS = -lglut -lGL -lm -lGLU -lpthread
 
 All: bin/arduinoscope
 
-bin/arduinoscope.o: arduinoscope.cc
+bin/%.o: %.cc
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-bin/arduinoscope: bin/arduinoscope.o
-	$(CC) $(CFLAGS) -o $@ $(LIBDIR) $< $(LIBS)
+objects = bin/SignalStat.o bin/Global.o bin/AdcEval.o bin/main.o
+
+bin/arduinoscope: $(objects)
+	$(CC) $(CFLAGS) -o $@ $(LIBDIR) $(objects) $(LIBS)
