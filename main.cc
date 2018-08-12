@@ -31,7 +31,7 @@ deque<unsigned long> lst;
 const int lstMaxSize = 800;
 mutex lstMutex;
 bool started = false;
-const int ADCVALUEMAX = 1023;
+const int ADCVALUEMAX = 255;// 1023;
 const int windowHeightMargin = 20;
 double vFactor = 1;
 double hFactor = 1;
@@ -108,9 +108,9 @@ void display()
     if (lastFreq < 1e3)
       sprintf(str, "Freq = %.0f  Hz", lastFreq);
     else if (lastFreq >= 1e3 && lastFreq < 1e6)
-      sprintf(str, "Freq = %.0f kHz", lastFreq / 1e3);
+      sprintf(str, "Freq = %.2f kHz", lastFreq / 1e3);
     else if (lastFreq >= 1e6)
-      sprintf(str, "Freq = %.0f Mhz", lastFreq / 1e6);
+      sprintf(str, "Freq = %.4f Mhz", lastFreq / 1e6);
 
     drawString(width - 100, height - windowHeightMargin - 3 * lineH, str);
   }
@@ -157,8 +157,8 @@ void display()
     int xmax = width;
 
     double voltages[] = {
-        signalStat.GetVmin(),
-        signalStat.GetVmax(),
+//        signalStat.GetVmin(),
+  //      signalStat.GetVmax(),
         signalStat.GetVminThresHold(),
         signalStat.GetVmaxThresHold()};
 
@@ -239,44 +239,16 @@ void thReadSerialFn()
     int n = read(USB, buf, BUFSIZE);
     int i = 0;
 
-    // seek start
-    while (i < n && buf[i] != '\r' && buf[i] != '\n')
-      ++i;
-
     while (i < n)
     {
-      // skip newline
-      while (i < n && (buf[i] == '\0' || buf[i] == '\r' || buf[i] == '\n'))
-        ++i;
-
-      int value = 0;
-
-      int j = i;
-      // seek newline
-      while (j < n && buf[j] != '\r' && buf[j] != '\n')
-        ++j;
-
-      // check incomplete last element
-      if (buf[j] != '\r' && buf[j] != '\n')
-      {
-        break;
-      }
-
-      // replace newline with null char
-      buf[j] = '\0';
-
       // convert value
-      value = atoi((const char *)buf + i);
+      int value = buf[i];
       processADC(value);
 
-      i = j;
-
-      // debug to terminal
-      //cout << value << endl;
+      ++i;
     }
-
-    //signalStat.Reset();
   }
+   
 }
 
 void keyboard(unsigned char c, int x, int y)

@@ -6,6 +6,7 @@
 #include "Global.h"
 
 #define ADC_VALUES_SIZE 512
+#define FREQ_THRESHOLD_FACTOR .4
 
 class SignalStat
 {

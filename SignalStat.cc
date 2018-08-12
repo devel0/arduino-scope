@@ -44,8 +44,8 @@ void SignalStat::AddAdcValue(int adcValue)
             i = ADC_VALUES_SIZE - 1;
     }
 
-    VminThresHold = Vmin + Vppk * .1;
-    VmaxThresHold = Vmin + Vppk * .9;
+    VminThresHold = Vmin + Vppk * FREQ_THRESHOLD_FACTOR;
+    VmaxThresHold = Vmin + Vppk * (1 - FREQ_THRESHOLD_FACTOR);
 
     if (!freqIsTop && V >= VmaxThresHold)
     {
@@ -58,7 +58,7 @@ void SignalStat::AddAdcValue(int adcValue)
     }
 
     if (computeFreq)
-    {        
+    {
         freq = freqCnt;
         freqCnt = 0;
         refTimestamp = now;

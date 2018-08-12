@@ -11,6 +11,9 @@ All: bin/arduinoscope
 bin/%.o: %.cc
 	$(CC) -c $(CFLAGS) -o $@ $<
 
+bin/%.o: %.cc %.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+
 objects = bin/SignalStat.o bin/Global.o bin/AdcEval.o bin/main.o
 
 bin/arduinoscope: $(objects)
