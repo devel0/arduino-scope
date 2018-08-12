@@ -20,7 +20,9 @@ void setup() {
 void loop() { 
   sensorValue = analogRead(sensorPin);
 
+  char val = (((double)sensorValue/1023)*255);
+
   // encode into 1 byte
-  Serial.print((char)(sensorValue/4));
-  //Serial.println(sensorValue);
+  Serial.print(val);
+  //Serial.println(val);
 }
