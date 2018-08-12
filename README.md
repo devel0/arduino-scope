@@ -1,16 +1,8 @@
 # arduino-scope
 simple oscilloscope opengl using arduino as adc input through usb serial
 
-![img](doc/Selection_001.png)
-*scoping f-Generator 9Hz from Transistor Tester*
-
-## introduction
-
-Reading about [audio signal acquisition from a headphone jack](http://forum.arduino.cc/index.php?topic=42833.0) I wanted to try to see if suggested experiment works:
-- connect headphone through a simple resistors, capacitors [circuit](http://interface.khm.de/index.php/lab/interfaces-advanced/arduino-realtime-audio-processing/) from Android to Arduino
-- using [Keuwisoft Dual Channel Function Generator](https://play.google.com/store/apps/details?id=com.keuwl.functiongenerator)
-- using Arduino ADC to convert signal to digital, then serial
-- using C++ opengl program to display waveform
+- Arduino ADC to convert signal to digital, then serial
+- C++ opengl program to display waveform
 
 ## keys
 
@@ -18,6 +10,8 @@ Reading about [audio signal acquisition from a headphone jack](http://forum.ardu
 - *v/V* : decrease/increase vertical factor
 - *h/H* : decrease/increase horizontal factor
 - *up/down* : delta vertical
+- *p* : toggle point mode
+- *t* : toggle text info
 
 ## flash arduino
 
@@ -40,29 +34,28 @@ code .
 
 ## dev notes
 
-- data 10bit adc from arduino are encoded into two bytes with a marker to allow c++ to recognize binary data order ( see word [mangled](https://github.com/devel0/arduino-scope/blob/3fe14ac2e20721e855c94ae7a256e31a1498df7d/arduino-scope/arduino-scope.ino#L27-L39) and [demangle](https://github.com/devel0/arduino-scope/blob/3fe14ac2e20721e855c94ae7a256e31a1498df7d/arduinoscope.cc#L152)
+- serial setup in c++ app is buggy ( a workaround is to start serial log from arduino then close after flashed )
 
-## function generator through smartphone
+## comparision
 
-- 440Hz
+using 10bit adc and serial output I was able to detect [frequency count](https://github.com/devel0/arduino-scope/blob/6be14c5f0db8fd69c381b6d43ea400d43530e45f/SignalStat.cc#L47-L65) up to 200Hz and Vppk with good resolution. Note: to condition the offset of a signal generator (centered in 0V) I used a voltage divider on the adc input
 
-![img](doc/fngen-sin-440.png)
-![img](doc/fngen-tri-440.png)
-![img](doc/fngen-sq-440.png)
+### 2hz
 
-- 440Hz duty 10%, 90%
+![img](doc/scope2hz.jpg)
+![img](doc/ascope2hz.png)
 
-![img](doc/fngen-sq-440-duty10.png)
-![img](doc/fngen-sq-440-duty90.png)
+### 17hz
 
-- 1Khz
+![img](doc/scope17hz.jpg)
+![img](doc/ascope17hz.png)
 
-![img](doc/fngen-sq-1k.png)
+### 100hz
 
+![img](doc/scope100hz.jpg)
+![img](doc/ascope100hz.png)
 
-## future
+### 194hz
 
-Show signal informations such as:
-- min,max,mean Voltage value
-- signal frequency
-- ...
+![img](doc/scope194hz.jpg)
+![img](doc/ascope194hz.png)
