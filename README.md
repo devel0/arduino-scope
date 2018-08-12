@@ -34,14 +34,10 @@ code .
 - tune serial port in `launch.json` "args"
 - hit F5 to start
 
-<<<<<<< HEAD
-=======
 ## dev notes
 
-- serial setup in c++ app is buggy ( a workaround is to start serial log from arduino then close after flashed )
 - an ethernet udp branch exists but no increase in freq rate because bottleneck still exists in ADC conversion
 
->>>>>>> 4def584cba45e0b3c7bc501edf5527bc6ae6fe29
 ## comparision
 
 | freq | sine | square |
