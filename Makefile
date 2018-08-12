@@ -6,7 +6,10 @@ CC = g++
 CFLAGS = $(FLAGS) $(INCLUDE) -g
 LIBS = -lglut -lGL -lm -lGLU -lpthread
 
-All: bin/arduinoscope
+All: pre bin/arduinoscope
+
+pre:
+	mkdir -p bin
 
 bin/%.o: %.cc
 	$(CC) -c $(CFLAGS) -o $@ $<
