@@ -43,3 +43,6 @@ code .
 | freq | sine | square |
 |---|---|---|
 | 460hz | ![img](doc/sin460hz.png) | ![img](doc/sq463hz.png) |
+| 1.57khz | ![img](doc/sin1_58khz.png) | ![img](doc/sq1_58khz.png) |
+| 3.26khz | ![img](doc/sin3_26khz.png) | ![img](doc/sq3_23khz.png) |
+| 4.44khz | N/A | ![img](doc/sq4_44khz.png) |
