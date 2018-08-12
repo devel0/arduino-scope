@@ -7,6 +7,10 @@
 #include <memory.h>
 #include <termios.h>
 
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
 #include <fstream>
 #include <chrono>
 #include <list>
@@ -31,16 +35,16 @@ deque<unsigned long> lst;
 const int lstMaxSize = 800;
 mutex lstMutex;
 bool started = false;
-const int ADCVALUEMAX = 255;// 1023;
+const int ADCVALUEMAX = 255; // 1023;
 const int windowHeightMargin = 20;
 double vFactor = 1;
 double hFactor = 1;
 bool pointMode = false;
 bool textInfo = true;
 int deltaV = 0;
-string serialPortName;
-const int BUFSIZE = 64; //3*1024;
-uint8_t buf[BUFSIZE];
+int listenUDPPort =1234;
+const int BUFSIZE = 1024; //3*1024;
+uint8_t *buf;
 
 SignalStat signalStat;
 
@@ -157,8 +161,8 @@ void display()
     int xmax = width;
 
     double voltages[] = {
-//        signalStat.GetVmin(),
-  //      signalStat.GetVmax(),
+        //        signalStat.GetVmin(),
+        //      signalStat.GetVmax(),
         signalStat.GetVminThresHold(),
         signalStat.GetVmaxThresHold()};
 
@@ -210,45 +214,37 @@ void processADC(int adc)
 
 void thReadSerialFn()
 {
-  int USB = open(serialPortName.c_str(), O_RDWR | O_NOCTTY);
+  struct sockaddr_in si_me, si_other;
+  int s, i, slen = sizeof(si_other);  
 
-  {
-    struct termios tty;
-    memset(&tty, 0, sizeof tty);
+  if ((s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    perror("socket");
 
-    cfsetispeed(&tty, (speed_t)115200);
-
-    tty.c_cflag &= ~PARENB;
-    tty.c_cflag &= ~CSTOPB;
-    tty.c_cflag &= ~CSIZE;
-    tty.c_cflag |= CS8;
-
-    tty.c_cflag &= ~CRTSCTS;
-    tty.c_cc[VMIN] = 1;
-    tty.c_cc[VTIME] = 5;
-    tty.c_cflag |= CREAD | CLOCAL;
-
-    cfmakeraw(&tty);
-
-    tcflush(USB, TCIFLUSH);
-    tcsetattr(USB, TCSANOW, &tty);
-  }
+  memset((char *)&si_me, 0, sizeof(si_me));
+  si_me.sin_family = AF_INET;
+  si_me.sin_port = htons(listenUDPPort);
+  si_me.sin_addr.s_addr = htonl(INADDR_ANY);
+  if (bind(s, (sockaddr *)&si_me, sizeof(si_me)) == -1)
+    perror("bind");
 
   while (true)
   {
-    int n = read(USB, buf, BUFSIZE);
-    int i = 0;
-
-    while (i < n)
+    ssize_t rsize = 0;
+    if ((rsize = recvfrom(s, buf, BUFSIZE, 0, (sockaddr *)&si_other, (socklen_t *)&slen)) == -1)
+      perror("recvfrom()");
+    else
     {
-      // convert value
-      int value = buf[i];
-      processADC(value);
+      int i = 0;
 
-      ++i;
+      while (i < rsize)
+      {
+        int value = buf[i];
+        processADC(value);
+
+        ++i;
+      }
     }
   }
-   
 }
 
 void keyboard(unsigned char c, int x, int y)
@@ -300,12 +296,14 @@ int main(int argc, char **argv)
 {
   if (argc != 2)
   {
-    cout << "Syntax: " << argv[0] << " <serial-port>" << endl;
+    cout << "Syntax: " << argv[0] << " <listen-udp-port>" << endl;
 
     return 1;
   }
 
-  serialPortName = argv[1];
+  listenUDPPort = atoi(argv[1]);
+
+  buf = (uint8_t *)malloc(BUFSIZE);
 
   glutInit(&argc, argv);
   glutCreateWindow("arduinoscope");
