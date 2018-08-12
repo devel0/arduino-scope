@@ -24,6 +24,9 @@
 
 using namespace std;
 
+const int ADC_VALUE_MIN = 0;
+const int ADC_VALUE_MAX = 255;
+
 thread thReadSerial;
 auto start = std::chrono::system_clock::now();
 deque<unsigned long> lst;
@@ -41,7 +44,8 @@ string serialPortName;
 const int BUFSIZE = 64; //3*1024;
 uint8_t buf[BUFSIZE];
 
-SignalStat signalStat;
+SignalStat *signalStat;
+ADCEval *adcEval;
 
 void reshape(int w, int h)
 {
@@ -89,10 +93,10 @@ void display()
     if (diff.count() > 150)
     {
       lastDisplay = cur;
-      lastVmin = signalStat.GetVmin();
-      lastVmax = signalStat.GetVmax();
-      lastVppk = signalStat.GetVppk();
-      lastFreq = signalStat.GetFreq();
+      lastVmin = signalStat->GetVmin();
+      lastVmax = signalStat->GetVmax();
+      lastVppk = signalStat->GetVppk();
+      lastFreq = signalStat->GetFreq();
     }
 
     sprintf(str, "Vmin = %.2f", lastVmin);
@@ -158,12 +162,12 @@ void display()
     double voltages[] = {
         //        signalStat.GetVmin(),
         //      signalStat.GetVmax(),
-        signalStat.GetVminThresHold(),
-        signalStat.GetVmaxThresHold()};
+        signalStat->GetVminThresHold(),
+        signalStat->GetVmaxThresHold()};
 
     for (int i = 0; i < sizeof(voltages) / sizeof(double); ++i)
     {
-      auto adcv = global.adcEval.GetADC(voltages[i]);
+      auto adcv = adcEval->GetADC(voltages[i]);
 
       double y = windowHeightMargin + heightMid +
                  (adcv - adcValueMid + deltaV) / adcValueMid * (heightMid - 2 * windowHeightMargin) * vFactor;
@@ -198,7 +202,7 @@ void idleFunc()
 
 void processADC(int adc)
 {
-  signalStat.AddAdcValue(adc);
+  signalStat->AddAdcValue(adc);
 
   lstMutex.lock();
   if (lst.size() > lstMaxSize)
@@ -209,7 +213,7 @@ void processADC(int adc)
 
 void thReadSerialFn()
 {
-  int USB = Global::Instance().OpenSerial(serialPortName.c_str(), 115200); 
+  int USB = Global::Instance().OpenSerial(serialPortName.c_str(), 115200);
 
   while (true)
   {
@@ -274,14 +278,18 @@ void keyboardSpecial(int key, int x, int y)
 
 int main(int argc, char **argv)
 {
-  if (argc != 2)
+  if (argc != 3)
   {
-    cout << "Syntax: " << argv[0] << " <serial-port>" << endl;
+    cout << "Syntax: " << argv[0] << " <serial-port> <vcc>" << endl;
 
     return 1;
   }
 
   serialPortName = argv[1];
+  double vcc = atof(argv[2]);
+
+  adcEval = new ADCEval(ADC_VALUE_MIN, 0, ADC_VALUE_MAX, vcc);
+  signalStat = new SignalStat(*adcEval);
 
   glutInit(&argc, argv);
   glutCreateWindow("arduinoscope");

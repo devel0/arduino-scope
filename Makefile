@@ -8,6 +8,9 @@ LIBS = -lglut -lGL -lm -lGLU -lpthread
 
 All: pre bin/arduinoscope
 
+clean:
+	rm -fr bin
+
 pre:
 	mkdir -p bin
 

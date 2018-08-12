@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/arduinoscope",
-            "args": [ "/dev/ttyUSB0" ],
+            "args": [ "/dev/ttyUSB0", "4.63" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

@@ -22,13 +22,14 @@ private:
   std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::nanoseconds> refTimestamp;
   int adcValueCount = 0;
   int adcValuePos = 0;
+  ADCEval& adcEval;
 
   long int freqCnt = 0;
   bool freqIsTop = false;
   double freq;
 
 public:
-  SignalStat();
+  SignalStat(ADCEval& adcEval);
   void Reset();
   void AddAdcValue(int adcValue);
 

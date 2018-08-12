@@ -6,8 +6,8 @@
 
 using namespace std;
 
-SignalStat::SignalStat() : global(Global::Instance())
-{
+SignalStat::SignalStat(ADCEval& adcEval) : global(Global::Instance()), adcEval(adcEval)
+{    
     refTimestamp = chrono::system_clock::now();
     Reset();
 }
@@ -24,7 +24,7 @@ void SignalStat::AddAdcValue(int adcValue)
     auto now = chrono::system_clock::now();
     auto computeFreq = (now - refTimestamp).count() > 1e9;
 
-    auto V = global.adcEval.GetVoltage(adcValue);
+    auto V = adcEval.GetVoltage(adcValue);
 
     if (adcValuePos == ADC_VALUES_SIZE)
         adcValuePos = 0;

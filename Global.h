@@ -9,9 +9,7 @@ class Global
 private:
   static Global *instance;
 
-public:
-  ADCEval& adcEval;
-
+public:  
   Global();
 
   static Global &Instance();
