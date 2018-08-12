@@ -2,6 +2,7 @@
 simple oscilloscope opengl using arduino as adc input through usb serial
 
 - Arduino ADC to convert signal to digital, then serial
+  - 115kbaud =~ 11.5kb/s ( need at least 2 byte for a freq detect, ie. max freq detectable about 11.5khz/2 )
 - C++ opengl program to display waveform
 
 ## keys
@@ -39,24 +40,6 @@ code .
 
 ## comparision
 
-using 10bit adc and serial output I was able to detect [frequency count](https://github.com/devel0/arduino-scope/blob/6be14c5f0db8fd69c381b6d43ea400d43530e45f/SignalStat.cc#L47-L65) up to 200Hz and Vppk with good resolution. Note: to condition the offset of a signal generator (centered in 0V) I used a voltage divider on the adc input
-
-### 2hz
-
-![img](doc/scope2hz.jpg)
-![img](doc/ascope2hz.png)
-
-### 17hz
-
-![img](doc/scope17hz.jpg)
-![img](doc/ascope17hz.png)
-
-### 100hz
-
-![img](doc/scope100hz.jpg)
-![img](doc/ascope100hz.png)
-
-### 194hz
-
-![img](doc/scope194hz.jpg)
-![img](doc/ascope194hz.png)
+| freq | sine | square |
+|---|---|---|
+| 460hz | ![img](doc/sin460hz.png) | ![img](doc/sq463hz.png) |
