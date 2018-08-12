@@ -15,6 +15,7 @@ public:
   Global();
 
   static Global &Instance();
+  int OpenSerial(const char *device, int rate);
 };
 
 #endif

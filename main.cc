@@ -5,7 +5,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <memory.h>
-#include <termios.h>
 
 #include <fstream>
 #include <chrono>
@@ -31,7 +30,7 @@ deque<unsigned long> lst;
 const int lstMaxSize = 800;
 mutex lstMutex;
 bool started = false;
-const int ADCVALUEMAX = 255;// 1023;
+const int ADCVALUEMAX = 255; // 1023;
 const int windowHeightMargin = 20;
 double vFactor = 1;
 double hFactor = 1;
@@ -157,8 +156,8 @@ void display()
     int xmax = width;
 
     double voltages[] = {
-//        signalStat.GetVmin(),
-  //      signalStat.GetVmax(),
+        //        signalStat.GetVmin(),
+        //      signalStat.GetVmax(),
         signalStat.GetVminThresHold(),
         signalStat.GetVmaxThresHold()};
 
@@ -210,29 +209,7 @@ void processADC(int adc)
 
 void thReadSerialFn()
 {
-  int USB = open(serialPortName.c_str(), O_RDWR | O_NOCTTY);
-
-  {
-    struct termios tty;
-    memset(&tty, 0, sizeof tty);
-
-    cfsetispeed(&tty, (speed_t)115200);
-
-    tty.c_cflag &= ~PARENB;
-    tty.c_cflag &= ~CSTOPB;
-    tty.c_cflag &= ~CSIZE;
-    tty.c_cflag |= CS8;
-
-    tty.c_cflag &= ~CRTSCTS;
-    tty.c_cc[VMIN] = 1;
-    tty.c_cc[VTIME] = 5;
-    tty.c_cflag |= CREAD | CLOCAL;
-
-    cfmakeraw(&tty);
-
-    tcflush(USB, TCIFLUSH);
-    tcsetattr(USB, TCSANOW, &tty);
-  }
+  int USB = Global::Instance().OpenSerial(serialPortName.c_str(), 115200); 
 
   while (true)
   {
@@ -248,7 +225,6 @@ void thReadSerialFn()
       ++i;
     }
   }
-   
 }
 
 void keyboard(unsigned char c, int x, int y)
