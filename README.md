@@ -37,6 +37,7 @@ code .
 ## dev notes
 
 - serial setup in c++ app is buggy ( a workaround is to start serial log from arduino then close after flashed )
+- an ethernet udp branch exists but no increase in freq rate because bottleneck still exists in ADC conversion
 
 ## comparision
 
