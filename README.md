@@ -30,6 +30,7 @@ code .
 ```
 
 - breakpoints works thanks to `gdb` debugger ( `-g` switch to gcc - see Makefile )
+- tune serial port in `launch.json` "args"
 - hit F5 to start
 
 ## dev notes
