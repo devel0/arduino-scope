@@ -278,17 +278,16 @@ void keyboardSpecial(int key, int x, int y)
 
 int main(int argc, char **argv)
 {
-  if (argc != 3)
+  if (argc != 2)
   {
-    cout << "Syntax: " << argv[0] << " <serial-port> <vcc>" << endl;
+    cout << "Syntax: " << argv[0] << " <serial-port>" << endl;
 
     return 1;
   }
 
-  serialPortName = argv[1];
-  double vcc = atof(argv[2]);
+  serialPortName = argv[1];  
 
-  adcEval = new ADCEval(ADC_VALUE_MIN, 0, ADC_VALUE_MAX, vcc);
+  adcEval = new ADCEval(ADC_VALUE_MIN, 0, ADC_VALUE_MAX, 5.0);
   signalStat = new SignalStat(*adcEval);
 
   glutInit(&argc, argv);
